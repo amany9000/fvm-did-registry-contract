@@ -2,10 +2,10 @@
 pragma solidity ^0.8.16;
 
 /**
- *@title PolygonDidRegistry
- *@dev Smart Contract for Polygon DID Method
+ *@title FVMDidRegistry
+ *@dev Smart Contract for FVM DID Method
  */
-contract PolygonDidRegistry {
+contract FVMDidRegistry {
     uint256 totalDIDs;
     address owner;
     uint256 deletedDID;
@@ -36,7 +36,7 @@ contract PolygonDidRegistry {
      *@dev initializes the ownership of contract
      **/
 
-    function initialize() public {
+    constructor() {
         require(!initialized, "Contract instance has already been initialized");
         initialized = true;
         owner = msg.sender;

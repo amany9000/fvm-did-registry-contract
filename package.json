@@ -1,8 +1,8 @@
 {
-  "name": "@ayanworks/polygon-did-registry-contract",
+  "name": "@ayanworks/FVM-did-registry-contract",
   "version": "2.0.0",
-  "description": "Smart Contract to register DID on Polygon",
-  "main": "build/contracts/PolygonDidRegistry.json",
+  "description": "Smart Contract to register DID on FVM",
+  "main": "build/contracts/FVMDidRegistry.json",
   "directories": {
     "test": "test"
   },
@@ -14,14 +14,14 @@
   "license": "MIT",
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.0",
-    "@truffle/hdwallet-provider": "^2.0.10",
+    "@truffle/hdwallet-provider": "^2.1.2",
     "dotenv": "^16.0.2",
     "eslint": "^8.23.1",
     "fs-extra": "8.1.0",
     "ganache-cli": "6.12.2",
     "mocha": "^7.0.0",
     "solc": "0.8.0",
-    "truffle": "^5.5.20"
+    "truffle": "^5.6.8"
   },
   "devDependencies": {
     "@openzeppelin/truffle-upgrades": "^1.15.0",
@@ -31,17 +31,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ayanworks/polygon-did-registry-contract"
+    "url": "git+https://github.com/ayanworks/FVM-did-registry-contract"
   },
   "keywords": [
     "did-method"
   ],
-  "author": "Ajay Jadhav <ajay@ayanworks.com>",
-  "contributors": [
-    "Anusha Garg <anusha.garg@ayanworks.com>, Shashank Kulkarni <shashank.kulkarni@ayanworks.com>"
-  ],
+  "author": "Aman Yadav <amanyadavlko2502@gmail.com>",
   "bugs": {
-    "url": "https://github.com/ayanworks/polygon-did-registry-contract/issues"
+    "url": "https://github.com/ayanworks/FVM-did-registry-contract/issues"
   },
-  "homepage": "https://github.com/ayanworks/polygon-did-registry-contract#readme"
+  "homepage": "https://github.com/ayanworks/FVM-did-registry-contract#readme"
 }

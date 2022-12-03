@@ -2,14 +2,14 @@ const ethers = require('ethers');
 const ganache = require('ganache-cli');
 const assert = require('assert');
 const { deployProxy } = require('@openzeppelin/truffle-upgrades');
-const PolygonDidRegistry = artifacts.require("PolygonDidRegistry");
+const FVMDidRegistry = artifacts.require("FVMDidRegistry");
 
 // Library initialization that will talk with Blockchain
 const provider = new ethers.providers.Web3Provider(ganache.provider({ gasLimit: 8000000 }));
 // Initializing the build files
-const PolygonDIDRegistryJSON = require('../build/contracts/PolygonDidRegistry.json');
+const FVMDIDRegistryJSON = require('../build/contracts/FVMDidRegistry.json');
 
-let accounts, PolygonDIDRegistryInstance, PolygonDIDRegistryInstance_test, PolygonUpgradableInstance, PolygonUpgradableInstance_test;
+let accounts, FVMDIDRegistryInstance, FVMDIDRegistryInstance_test, FVMUpgradableInstance, FVMUpgradableInstance_test;
 
 // Describing the 1st Test
 // This will setup Ganache with some test address
@@ -32,9 +32,9 @@ describe('Setting up the Upgradable Smart Contract', async () => {
     describe('Setting up the contract', async () => {
 
         it("Should deploy contract with Proxy, with no parameters/Constructor", async () => {
-            PolygonUpgradableInstance = await deployProxy( PolygonDidRegistry );
-            PolygonUpgradableInstance_test = new ethers.Contract(PolygonUpgradableInstance.address, PolygonDIDRegistryJSON.abi, provider.getSigner(accounts[3]));
-            assert.ok(PolygonUpgradableInstance.address, 'Upgradeable contract is deployed');
+            FVMUpgradableInstance = await deployProxy( FVMDidRegistry );
+            FVMUpgradableInstance_test = new ethers.Contract(FVMUpgradableInstance.address, FVMDIDRegistryJSON.abi, provider.getSigner(accounts[3]));
+            assert.ok(FVMUpgradableInstance.address, 'Upgradeable contract is deployed');
         });
     });
 
@@ -45,11 +45,11 @@ describe('Setting up the Upgradable Smart Contract', async () => {
 
             // This will send the value to local ganache blockchain
             const did = '0x2f65b747440deaf596892dfc7965040be8b99100';
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
-            const tx = await PolygonUpgradableInstance.createDID(did, doc);
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const tx = await FVMUpgradableInstance.createDID(did, doc);
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonUpgradableInstance.getDID(did);
+            const currentValue = await FVMUpgradableInstance.getDID(did);
 
             // Comparing the set value to confirm
             assert.equal(
@@ -70,7 +70,7 @@ describe('Setting up the Upgradable Smart Contract', async () => {
             describe('Checking the getTotalNumberOfDIDs Function', async () => {
                 it('This should get correct number of DIDs registered', async () => {
         
-                    const currentValue = await PolygonUpgradableInstance.getTotalNumberOfDIDs();
+                    const currentValue = await FVMUpgradableInstance.getTotalNumberOfDIDs();
                     assert.equal(
                         currentValue,
                         1,
@@ -88,11 +88,11 @@ describe('Setting up the Upgradable Smart Contract', async () => {
             // This will send the value to local ganache blockchain
             const did = '0x2f65b747440deaf596892dfc7965040be8b99100';
             //changed the controller
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
-            const tx = await PolygonUpgradableInstance.updateDID(did, doc);
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const tx = await FVMUpgradableInstance.updateDID(did, doc);
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonUpgradableInstance.getDID(did);
+            const currentValue = await FVMUpgradableInstance.getDID(did);
 
             // Comparing the set value to confirm
             assert.equal(
@@ -109,12 +109,12 @@ describe('Setting up the Upgradable Smart Contract', async () => {
         it('This should not update DID doc ', async () => {
 
             const did = '0x2f65b747440deaf596892dfc7965040be8b99100';
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
             try {
                 assert.ifError(
 
                     //sending transaction using different controller
-                    await PolygonUpgradableInstance_test.functions.updateDID(did, doc));
+                    await FVMUpgradableInstance_test.functions.updateDID(did, doc));
             } catch (error) {
             }
         });
@@ -127,10 +127,10 @@ describe('Setting up the Upgradable Smart Contract', async () => {
 
             // This will send the value to local ganache blockchain
             const did = '0x2f65b747440deaf596892dfc7965040be8b99100';
-            const tx = await PolygonUpgradableInstance.deleteDID(did);
+            const tx = await FVMUpgradableInstance.deleteDID(did);
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonUpgradableInstance.getDID(did);
+            const currentValue = await FVMUpgradableInstance.getDID(did);
 
             // Comparing the set value to confirm
             assert.equal(
@@ -148,12 +148,12 @@ describe('Setting up the Upgradable Smart Contract', async () => {
 
             // This will send the value to local ganache blockchain
             const did = '0x54ec7be8b24f7139f870f277cf99c527ff43892b';
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","verificationMethod":[{"id":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","publicKeyBase58":"RwHysxjkzFdJDqi2irHRVRFHX9uUj5aVAXVoufnk5PDA4qcn1ejJMgGhqCsFdQqXRCTdi4TbEQFJjDUAdi2JvYmH"}]}';
-            const doctest = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
-            const tx = await PolygonUpgradableInstance.createDID(did, doc);
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","verificationMethod":[{"id":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","publicKeyBase58":"RwHysxjkzFdJDqi2irHRVRFHX9uUj5aVAXVoufnk5PDA4qcn1ejJMgGhqCsFdQqXRCTdi4TbEQFJjDUAdi2JvYmH"}]}';
+            const doctest = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const tx = await FVMUpgradableInstance.createDID(did, doc);
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonUpgradableInstance.getDID(did);
+            const currentValue = await FVMUpgradableInstance.getDID(did);
 
             // Checking value is not null
 
@@ -173,12 +173,12 @@ describe('Setting up the Upgradable Smart Contract', async () => {
             // This will send the value to local ganache blockchain
             const did = '0x54ec7be8b24f7139f870f277cf99c527ff43892b';
             //changed the controller
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
-            const docoriginal = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","verificationMethod":[{"id":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","publicKeyBase58":"RwHysxjkzFdJDqi2irHRVRFHX9uUj5aVAXVoufnk5PDA4qcn1ejJMgGhqCsFdQqXRCTdi4TbEQFJjDUAdi2JvYmH"}]}';
-            const tx = await PolygonUpgradableInstance.updateDID(did, doc);
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const docoriginal = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","verificationMethod":[{"id":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","publicKeyBase58":"RwHysxjkzFdJDqi2irHRVRFHX9uUj5aVAXVoufnk5PDA4qcn1ejJMgGhqCsFdQqXRCTdi4TbEQFJjDUAdi2JvYmH"}]}';
+            const tx = await FVMUpgradableInstance.updateDID(did, doc);
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonUpgradableInstance.getDID(did);
+            const currentValue = await FVMUpgradableInstance.getDID(did);
 
             // Comparing the set value to confirm
             assert.notEqual(
@@ -197,11 +197,11 @@ describe('Setting up the Upgradable Smart Contract', async () => {
 
             // This will send the value to local ganache blockchain
             const did = '0x54ec7be8b24f7139f870f277cf99c527ff43892b';
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
-            const tx = await PolygonUpgradableInstance.deleteDID(did);
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const tx = await FVMUpgradableInstance.deleteDID(did);
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonUpgradableInstance.getDID(did);
+            const currentValue = await FVMUpgradableInstance.getDID(did);
 
             // Comparing the set value to confirm
             assert.notEqual(
@@ -216,8 +216,8 @@ describe('Setting up the Upgradable Smart Contract', async () => {
       describe('Checking the getTotalNumberOfDIDs Function', async () => {
         it('This should get correct number of DIDs registered', async () => {
 
-            const totalValue = await PolygonUpgradableInstance.getTotalNumberOfDIDs();
-            const deltedValue = await PolygonUpgradableInstance.getTotalNumberOfDeletedDIDs();
+            const totalValue = await FVMUpgradableInstance.getTotalNumberOfDIDs();
+            const deltedValue = await FVMUpgradableInstance.getTotalNumberOfDeletedDIDs();
             const currentValue = totalValue - deltedValue;
             assert.equal(
                 currentValue,
@@ -232,9 +232,9 @@ describe('Setting up the Upgradable Smart Contract', async () => {
         it('This should transfer ownership of contract to another user', async () => {
 
             const newOwner = accounts[5];
-            const owner = await PolygonUpgradableInstance.getOwner();
-            const tx = await PolygonUpgradableInstance.transferOwnership(newOwner);
-            const currentOwner = await PolygonUpgradableInstance.getOwner();
+            const owner = await FVMUpgradableInstance.getOwner();
+            const tx = await FVMUpgradableInstance.transferOwnership(newOwner);
+            const currentOwner = await FVMUpgradableInstance.getOwner();
 
             assert.notEqual(
                 owner,
@@ -252,7 +252,7 @@ describe('Setting up the Upgradable Smart Contract', async () => {
                 try {
                     assert.ifError(
                         //sending transaction using different controller
-                        await PolygonUpgradableInstance_test.functions.transferOwnership(newOwner));
+                        await FVMUpgradableInstance_test.functions.transferOwnership(newOwner));
                 } catch (error) {
                 }
             });
@@ -267,17 +267,17 @@ describe('Basic Contract Testing', async () => {
     // Describing a SubTest case
     describe('Setting up the contract', async () => {
 
-        it('This Deploys Polygon Smart contract from 1st account with no Parameters/Constructor', async () => {
+        it('This Deploys FVM Smart contract from 1st account with no Parameters/Constructor', async () => {
 
             // Creating a contract factory for deploying contract. 
-            const PolygonDIDRegistry = new ethers.ContractFactory(
-                PolygonDIDRegistryJSON.abi,
-                PolygonDIDRegistryJSON.bytecode,
+            const FVMDIDRegistry = new ethers.ContractFactory(
+                FVMDIDRegistryJSON.abi,
+                FVMDIDRegistryJSON.bytecode,
                 provider.getSigner(accounts[2])
             );
-            PolygonDIDRegistryInstance = await PolygonDIDRegistry.deploy();
-            PolygonDIDRegistryInstance_test = new ethers.Contract(PolygonDIDRegistryInstance.address, PolygonDIDRegistryJSON.abi, provider.getSigner(accounts[3]));
-            assert.ok(PolygonDIDRegistryInstance.address, 'conract address should be present');
+            FVMDIDRegistryInstance = await FVMDIDRegistry.deploy();
+            FVMDIDRegistryInstance_test = new ethers.Contract(FVMDIDRegistryInstance.address, FVMDIDRegistryJSON.abi, provider.getSigner(accounts[3]));
+            assert.ok(FVMDIDRegistryInstance.address, 'conract address should be present');
         });
 
     });
@@ -289,14 +289,14 @@ describe('Basic Contract Testing', async () => {
 
             // This will send the value to local ganache blockchain
             const did = '0x2f65b747440deaf596892dfc7965040be8b99100';
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
-            const tx = await PolygonDIDRegistryInstance.functions.createDID(did, doc);
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const tx = await FVMDIDRegistryInstance.functions.createDID(did, doc);
 
             // Transfer confirmation
             await tx.wait();
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonDIDRegistryInstance.functions.getDID(did);
+            const currentValue = await FVMDIDRegistryInstance.functions.getDID(did);
 
             // Comparing the set value to confirm
             assert.equal(
@@ -321,14 +321,14 @@ describe('Basic Contract Testing', async () => {
             // This will send the value to local ganache blockchain
             const did = '0x2f65b747440deaf596892dfc7965040be8b99100';
             //changed the controller
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
-            const tx = await PolygonDIDRegistryInstance.functions.updateDID(did, doc);
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const tx = await FVMDIDRegistryInstance.functions.updateDID(did, doc);
 
             // Transfer confirmation
             await tx.wait();
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonDIDRegistryInstance.functions.getDID(did);
+            const currentValue = await FVMDIDRegistryInstance.functions.getDID(did);
 
             // Comparing the set value to confirm
             assert.equal(
@@ -344,11 +344,11 @@ describe('Basic Contract Testing', async () => {
         it('This should not update DID doc ', async () => {
 
             const did = '0x2f65b747440deaf596892dfc7965040be8b99100';
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
             try {
                 assert.ifError(
                     //sending transaction using different controller
-                    await PolygonDIDRegistryInstance_test.functions.updateDID(did, doc));
+                    await FVMDIDRegistryInstance_test.functions.updateDID(did, doc));
             } catch (error) {
             }
         });
@@ -361,13 +361,13 @@ describe('Basic Contract Testing', async () => {
 
             // This will send the value to local ganache blockchain
             const did = '0x2f65b747440deaf596892dfc7965040be8b99100';
-            const tx = await PolygonDIDRegistryInstance.functions.deleteDID(did);
+            const tx = await FVMDIDRegistryInstance.functions.deleteDID(did);
 
             // Transfer confirmation
             await tx.wait();
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonDIDRegistryInstance.functions.getDID(did);
+            const currentValue = await FVMDIDRegistryInstance.functions.getDID(did);
 
             // Comparing the set value to confirm
             assert.equal(
@@ -385,15 +385,15 @@ describe('Basic Contract Testing', async () => {
 
             // This will send the value to local ganache blockchain
             const did = '0x54ec7be8b24f7139f870f277cf99c527ff43892b';
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","verificationMethod":[{"id":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","publicKeyBase58":"RwHysxjkzFdJDqi2irHRVRFHX9uUj5aVAXVoufnk5PDA4qcn1ejJMgGhqCsFdQqXRCTdi4TbEQFJjDUAdi2JvYmH"}]}';
-            const doctest = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
-            const tx = await PolygonDIDRegistryInstance.functions.createDID(did, doc);
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","verificationMethod":[{"id":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","publicKeyBase58":"RwHysxjkzFdJDqi2irHRVRFHX9uUj5aVAXVoufnk5PDA4qcn1ejJMgGhqCsFdQqXRCTdi4TbEQFJjDUAdi2JvYmH"}]}';
+            const doctest = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const tx = await FVMDIDRegistryInstance.functions.createDID(did, doc);
 
             // Transfer confirmation
             await tx.wait();
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonDIDRegistryInstance.functions.getDID(did);
+            const currentValue = await FVMDIDRegistryInstance.functions.getDID(did);
 
             // Checking value is not null
 
@@ -413,15 +413,15 @@ describe('Basic Contract Testing', async () => {
             // This will send the value to local ganache blockchain
             const did = '0x54ec7be8b24f7139f870f277cf99c527ff43892b';
             //changed the controller
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
-            const docoriginal = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","verificationMethod":[{"id":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x54ec7be8b24f7139f870f277cf99c527ff43892b","publicKeyBase58":"RwHysxjkzFdJDqi2irHRVRFHX9uUj5aVAXVoufnk5PDA4qcn1ejJMgGhqCsFdQqXRCTdi4TbEQFJjDUAdi2JvYmH"}]}';
-            const tx = await PolygonDIDRegistryInstance.functions.updateDID(did, doc);
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const docoriginal = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","verificationMethod":[{"id":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x54ec7be8b24f7139f870f277cf99c527ff43892b","publicKeyBase58":"RwHysxjkzFdJDqi2irHRVRFHX9uUj5aVAXVoufnk5PDA4qcn1ejJMgGhqCsFdQqXRCTdi4TbEQFJjDUAdi2JvYmH"}]}';
+            const tx = await FVMDIDRegistryInstance.functions.updateDID(did, doc);
 
             // Transfer confirmation
             await tx.wait();
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonDIDRegistryInstance.functions.getDID(did);
+            const currentValue = await FVMDIDRegistryInstance.functions.getDID(did);
 
             // Comparing the set value to confirm
             assert.notEqual(
@@ -440,14 +440,14 @@ describe('Basic Contract Testing', async () => {
 
             // This will send the value to local ganache blockchain
             const did = '0x54ec7be8b24f7139f870f277cf99c527ff43892b';
-            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:polygon:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:polygon:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
-            const tx = await PolygonDIDRegistryInstance.functions.deleteDID(did);
+            const doc = '{"@context":"https://w3id.org/did/v1","id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","verificationMethod":[{"id":"did:FVM:0x2f65b747440deaf596892dfc7965040be8b99100","type":"EcdsaSecp256k1VerificationKey2019","controller":"did:FVM:0x2f65b747440deaf596892dfc7965040be8c66666","publicKeyBase58":"NDaEdTguJV39Ns8BZkxQ3XR6GUinZAJfVoyEMkK9fP7XQmpSkT3UsLHB52cFpDqoM6m4Hevtba8pkmjvEG3Ur7ji"}]}';
+            const tx = await FVMDIDRegistryInstance.functions.deleteDID(did);
 
             // Transfer confirmation
             await tx.wait();
 
             // Getting the set value in ganache blockchain
-            const currentValue = await PolygonDIDRegistryInstance.functions.getDID(did);
+            const currentValue = await FVMDIDRegistryInstance.functions.getDID(did);
 
             // Comparing the set value to confirm
             assert.notEqual(

@@ -1,23 +1,22 @@
-# Polygon DID Registry Contract
+# FVM DID Registry Contract
 
-This library is an implementation of a registry contract that supports the Polygon DID Method.
+This library is an implementation of a registry contract that supports the FVM DID Method.
 
 ## Overview
 
-The Polygon registry contract acts as a public ledger, where the Polygon-Identity specified Decentralised Identifiers will be logged. The specifications related to polygon DID method are mentioned in the      document. A DID generated using the Polygon DID generator, can be stored and managed on the ledger using this contract library.
+The FVM registry contract acts as a public ledger, where the FVM-Identity specified Decentralised Identifiers will be logged. The specifications related to FVM DID method are mentioned in the      document. A DID generated using the FVM DID generator, can be stored and managed on the ledger using this contract library.
 
 ## Contract Deployment
 
 | Network | ChainId | Registry Address |
 | :---: | :---: | :---: | 
-| Polygon Mainnet | 137 | 0x98bF771e1E93Db917A89986bcdaBa3b43643F367 |
-| Polygon Testnet | 80001 | 0x8B335A167DA81CCef19C53eE629cf2F6291F2255 |
+| FVM Testnet (Wallaby)  | 31415 | 0x8B335A167DA81CCef19C53eE629cf2F6291F2255 |
 
 ## Methods
 
-* ```createDID(address, string)``` : The method createDID is used to create and log a new DID on the polygon chain. The parameter of address type, will act as the reference key, to refer  the did document stored on the chain. The string type variable will contain the did document, that will be stored on the matic chain.
+* ```createDID(address, string)``` : The method createDID is used to create and log a new DID on the FVM chain. The parameter of address type, will act as the reference key, to refer  the did document stored on the chain. The string type variable will contain the did document, that will be stored on the fvm chain.
 
-* ```updateDIDDoc(address, string)``` : The method updateDID is included in contract, which will facilitate the controller, and only the controller of the did, to update the document if need arises. Though the Polygon DID method, defines how the DID doc is defined as per standards, and that can be resolved.  
+* ```updateDIDDoc(address, string)``` : The method updateDID is included in contract, which will facilitate the controller, and only the controller of the did, to update the document if need arises. Though the FVM DID method, defines how the DID doc is defined as per standards, and that can be resolved.  
 
 * ```deleteDIDDoc(address)``` : The method deleteDID is included in the  contract, that only the controller of DID can access, to delete a particular DID from ledger.
 
@@ -27,21 +26,21 @@ The Polygon registry contract acts as a public ledger, where the Polygon-Identit
 
 * ```getOwner()``` : the method getOwner helps one to fetch the current owner of the contract.
 
-* ```getTotalNumberOfDIDs()``` : the method getTotalNumberOfDIDs helps one to fetch the total number of DIDs ever written on Polygon Ledger, with the number of currently active DIDs.
+* ```getTotalNumberOfDIDs()``` : the method getTotalNumberOfDIDs helps one to fetch the total number of DIDs ever written on FVM Ledger, with the number of currently active DIDs.
 
-* ```getTotalNumberOfDeletedDIDs()```: the method getTotalNumberOfDeletedDIDs helps one fetch the total number of DIDs deleted from Polygon Ledger.
+* ```getTotalNumberOfDeletedDIDs()```: the method getTotalNumberOfDeletedDIDs helps one fetch the total number of DIDs deleted from FVM Ledger.
 
 * ```getDIDDOcByIndex(uint256)``` : The method getDIDDOcByIndex helps,to resolve DID document by index.
 
 ## Example ethers code
 
-Using ethers, the following illustrates how one can interact with PolygonRegistry contract, from client side application.
+Using ethers, the following illustrates how one can interact with FVMRegistry contract, from client side application.
 
 ## Loading the Contract
 
 ```
 const ethers = require('ethers');
-const url = https://rpc-mumbai.matic.today; // For matic testnet
+const url = https://rpc-mumbai.fvm.today; // For fvm testnet
 const DID_ADDRESS = `<Contract Address>`;
 const provider = new ethers.providers.JsonRpcProvider(url);
 
@@ -74,7 +73,7 @@ let returnHashValues = await registry.functions.deleteDIDDoc(<DID address>)
 let returnDidDoc = await registry.functions.getDIDDoc(<DID address>);
 ```
 
-# Deploying the Contract on Matic network
+# Deploying the Contract on fvm network
 
 Pre-requisites
 
@@ -96,7 +95,7 @@ https://www.trufflesuite.com/docs/truffle/getting-started/truffle-with-metamask
 https://www.trufflesuite.com/ganache
 ```
 
-* A wallet connected to polygon network, with Matic token in it. One can receive the Matic Test Tokens from their faucet.
+* A wallet connected to FVM network, with fvm token in it. One can receive the fvm Test Tokens from their faucet.
 
  
 ## Deployment
@@ -104,7 +103,7 @@ https://www.trufflesuite.com/ganache
 Clone the above repository
 
 ```
-git clone https://gitlab.com/polygon-did/polygon-did-smart-contract.git
+git clone https://gitlab.com/FVM-did/FVM-did-smart-contract.git
 ```
 
 Install Dependencies
