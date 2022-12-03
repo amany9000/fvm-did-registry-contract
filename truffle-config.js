@@ -41,7 +41,7 @@
        provider: function () {
          return new HDWalletProvider(process.env.SIGNER, process.env.RPCURL);
        },
-       network_id: '18',
+       network_id: '18'
      }
    },
  

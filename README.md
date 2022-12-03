@@ -10,7 +10,7 @@ The FVM registry contract acts as a public ledger, where the FVM-Identity specif
 
 | Network | ChainId | Registry Address |
 | :---: | :---: | :---: | 
-| FVM Testnet (Wallaby)  | 31415 | 0x8B335A167DA81CCef19C53eE629cf2F6291F2255 |
+| FVM Testnet (Wallaby)  | 31415 | 0xD3c51785968E4Cdb55726c85194eB97105b99b80 |
 
 ## Methods
 

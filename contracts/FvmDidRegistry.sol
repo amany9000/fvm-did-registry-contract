@@ -5,7 +5,7 @@ pragma solidity ^0.8.16;
  *@title FVMDidRegistry
  *@dev Smart Contract for FVM DID Method
  */
-contract FVMDidRegistry {
+contract FvmDidRegistry {
     uint256 totalDIDs;
     address owner;
     uint256 deletedDID;
