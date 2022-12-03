@@ -1,5 +1,5 @@
 {
-  "name": "@ayanworks/FVM-did-registry-contract",
+  "name": "fvm-did-registry-contract",
   "version": "2.0.0",
   "description": "Smart Contract to register DID on FVM",
   "main": "build/contracts/FVMDidRegistry.json",
@@ -31,14 +31,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ayanworks/FVM-did-registry-contract"
+    "url": "git+https://github.com/amany9000/FVM-did-registry-contract"
   },
   "keywords": [
     "did-method"
   ],
   "author": "Aman Yadav <amanyadavlko2502@gmail.com>",
   "bugs": {
-    "url": "https://github.com/ayanworks/FVM-did-registry-contract/issues"
+    "url": "https://github.com/amany9000/FVM-did-registry-contract/issues"
   },
-  "homepage": "https://github.com/ayanworks/FVM-did-registry-contract#readme"
+  "homepage": "https://github.com/amany9000/FVM-did-registry-contract#readme"
 }
