@@ -100,7 +100,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -158,7 +159,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -176,7 +178,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -189,7 +192,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -208,7 +212,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -13367,9 +13372,17 @@
     "name": "solc",
     "version": "0.8.16+commit.07a7930e.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "18": {
+      "events": {},
+      "links": {},
+      "address": "0xb7b3AF0Cc2DD25168A8840b13fA8ba184b686f41",
+      "transactionHash": "0x7543d33b6198b52ddbf588e9de2c8a4d4654994515a9e011885ebc9746e0d2aa"
+    }
+  },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2022-12-03T13:24:43.944Z",
+  "updatedAt": "2023-01-13T12:38:50.055Z",
+  "networkType": "ethereum",
   "devdoc": {
     "details": "Smart Contract for FVM DID Method",
     "kind": "dev",
