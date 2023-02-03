@@ -37,11 +37,11 @@
        port: 8545, // Standard Ethereum port (default: none)
        network_id: "*", // Any network (default: none)
      },
-     wallaby: {
+     hyperspace: {
        provider: function () {
          return new HDWalletProvider(process.env.SIGNER, process.env.RPCURL);
        },
-       network_id: '18'
+       network_id: '19'
      }
    },
  
